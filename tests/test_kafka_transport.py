@@ -139,6 +139,6 @@ def test_kafka_health_requires_broker_metadata():
         ):
             transport._producer = producer
             result = await transport.health()
-            assert result == {"transport": "kafka", "healthy": expected, "durable": True}
+            assert result == {"transport": "kafka", "healthy": expected, "durable": True, "consumer_worker_failed": False}
 
     asyncio.run(scenario())

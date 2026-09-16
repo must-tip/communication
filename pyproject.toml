@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "musttip-communication"
-version = "1.0.0"
+version = "1.1.0"
 description = "Durable, authenticated Kafka and NATS communication SDK for MustTip services."
 readme = "README.md"
 requires-python = ">=3.12,<3.15"
@@ -19,16 +19,25 @@ dependencies = [
 kafka = ["confluent-kafka>=2.5,<3"]
 nats = ["nats-py>=2.9,<3"]
 all = ["confluent-kafka>=2.5,<3", "nats-py>=2.9,<3"]
-dev = ["pytest>=8,<10", "pytest-django>=4.9,<5"]
+dev = ["build>=1.2,<2", "pytest>=8,<10", "pytest-django>=4.9,<5"]
+
+[project.scripts]
+musttip-communication-kafka-check = "communication.diagnostics:main"
 
 [tool.setuptools]
-package-dir = {"" = ".."}
+package-dir = {"" = "src"}
 include-package-data = true
 
 [tool.setuptools.packages.find]
-where = [".."]
+where = ["src"]
 include = ["communication*"]
-exclude = ["communication.tests*", "communication.build*", "communication.dist*"]
+exclude = ["communication.tests*"]
 
 [tool.setuptools.package-data]
 communication = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+  "integration: requires a real external service and explicit opt-in",
+]
